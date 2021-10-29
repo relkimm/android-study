@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/alert_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Alert" />
+
+    <Button
+        android:id="@+id/date_picker_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Date Picker" />
+
+    <Button
+        android:id="@+id/time_picker_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Time Picker" />
+
+    <Button
+        android:id="@+id/naver_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Naver" />
+</LinearLayout>
