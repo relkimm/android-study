@@ -17,6 +17,7 @@ import com.example.tutorial01.view.GenreViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,12 +47,11 @@ public class GenreActivity extends AppCompatActivity {
                             return;
                         }
                         Log.d("연결 성공", "response code : " + response.code());
-                        final List<Genre> genres = response.body().getGenres();
-                        final List<GenreItem> genreItems = new ArrayList<>();
-                        for(Genre genre : genres) {
-                            final GenreItem genreItem = GenreItem.of(genre);
-                            genreItems.add(genreItem);
-                        }
+                        final List<GenreItem> genreItems = response.body().getGenres()
+                                .stream()
+                                .map(GenreItem::of)
+                                .collect(Collectors.toList());
+
                         genreViewAdapter.setItems(genreItems);
                     }
 

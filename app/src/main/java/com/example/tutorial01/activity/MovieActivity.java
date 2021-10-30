@@ -16,6 +16,7 @@ import com.example.tutorial01.service.MovieService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,12 +47,11 @@ public class MovieActivity extends AppCompatActivity {
                     }
 
                     Log.d("연결 성공", "response code: " + response.code());
-                    final List<Movie> movies = response.body().getResults();
-                    final List<MovieItem> movieItems = new ArrayList<>();
-                    for(Movie movie : movies) {
-                        final MovieItem movieItem = MovieItem.of(movie);
-                        movieItems.add(movieItem);
-                    }
+                    final List<MovieItem> movieItems = response.body().getResults()
+                            .stream()
+                            .map(MovieItem::of)
+                            .collect(Collectors.toList());
+
                     movieViewAdapter.addItems(movieItems);
                 }
 
