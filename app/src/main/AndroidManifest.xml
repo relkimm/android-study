@@ -21,5 +21,6 @@
         <activity android:name=".activity.MovieActivity" />
         <activity android:name=".activity.DialogActivity" />
         <activity android:name=".activity.GenreActivity" />
+        <activity android:name=".activity.MovieDetailActivity" />
     </application>
 </manifest>

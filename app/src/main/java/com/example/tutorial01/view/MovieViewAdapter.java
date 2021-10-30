@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int VIEW_TYPE_ITEM   = 0;
+    private static final int VIEW_TYPE_ITEM  = 0;
     private static final int VIEW_TYPE_PROGRESS_BAR = 1;
     private List<MovieItem> movieItems = new ArrayList<>();
 

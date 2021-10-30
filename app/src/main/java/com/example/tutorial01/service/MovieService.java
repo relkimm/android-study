@@ -3,6 +3,7 @@ package com.example.tutorial01.service;
 
 import com.example.tutorial01.api.config.RetrofitFactory;
 import com.example.tutorial01.api.MovieApi;
+import com.example.tutorial01.model.MovieDetail;
 import com.example.tutorial01.model.MovieResponse;
 
 import retrofit2.Call;
@@ -28,4 +29,6 @@ public class MovieService {
     public Call<MovieResponse> getPopular(int page) {
         return movieApi.getPopular(page);
     }
+
+    public Call<MovieDetail> getDetail(long movieId) { return movieApi.getDetail(movieId); }
 }
