@@ -9,13 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tutorial01.R;
-import com.example.tutorial01.model.Genre;
 import com.example.tutorial01.model.GenreResponse;
 import com.example.tutorial01.service.GenreService;
 import com.example.tutorial01.view.GenreItem;
 import com.example.tutorial01.view.GenreViewAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,17 +24,24 @@ import retrofit2.Response;
 public class GenreActivity extends AppCompatActivity {
     private RecyclerView genreListView;
     private GenreViewAdapter genreViewAdapter;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genre);
-
         genreListView = findViewById(R.id.genre_list);
-        genreViewAdapter = new GenreViewAdapter();
-        genreListView.setAdapter(genreViewAdapter);
-        genreListView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+        genreViewAdapter = new GenreViewAdapter();
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
+        genreListView.setAdapter(genreViewAdapter);
+        genreListView.setLayoutManager(linearLayoutManager);
+
+        fetchGenres();
+    }
+
+    private void fetchGenres() {
         GenreService.getInstance()
                 .getGenres()
                 .enqueue(new Callback<GenreResponse>() {
@@ -46,6 +51,7 @@ public class GenreActivity extends AppCompatActivity {
                             Log.e("연결 성공X", "response code : " + response.code());
                             return;
                         }
+
                         Log.d("연결 성공", "response code : " + response.code());
                         final List<GenreItem> genreItems = response.body().getGenres()
                                 .stream()
