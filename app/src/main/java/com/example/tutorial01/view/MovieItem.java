@@ -2,6 +2,11 @@ package com.example.tutorial01.view;
 
 import com.example.tutorial01.model.Movie;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class MovieItem {
     private String imageUrl;
     private String title;
@@ -17,29 +22,5 @@ public class MovieItem {
         final String baseUrl = "https://image.tmdb.org/t/p/original";
         final String imageUrl = String.format("%s%s", baseUrl, movie.getPosterPath());
         return new MovieItem(imageUrl, movie.getTitle(), movie.getOverview());
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 }
