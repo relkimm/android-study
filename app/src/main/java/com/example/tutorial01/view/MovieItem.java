@@ -1,22 +1,30 @@
 package com.example.tutorial01.view;
 
+import com.example.tutorial01.model.Movie;
+
 public class MovieItem {
-    private int iconId;
+    private String imageUrl;
     private String title;
     private String content;
 
-    public MovieItem(int iconId, String title, String content) {
-        this.iconId = iconId;
+    private MovieItem(String imageUrl, String title, String content) {
+        this.imageUrl = imageUrl;
         this.title = title;
         this.content = content;
     }
 
-    public int getIconId() {
-        return iconId;
+    public static MovieItem of(Movie movie) {
+        final String baseUrl = "https://image.tmdb.org/t/p/original";
+        final String imageUrl = String.format("%s%s", baseUrl, movie.getPosterPath());
+        return new MovieItem(imageUrl, movie.getTitle(), movie.getOverview());
     }
 
-    public void setIconId(int iconId) {
-        this.iconId = iconId;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {

@@ -24,7 +24,7 @@ public class MenuActivity extends AppCompatActivity {
         genreButton = findViewById(R.id.genre_button);
 
         listButton.setOnClickListener((view) -> {
-            final Intent intent = new Intent(this, ListActivity.class);
+            final Intent intent = new Intent(this, MovieActivity.class);
             startActivity(intent);
         });
 

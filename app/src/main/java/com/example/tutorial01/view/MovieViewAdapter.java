@@ -1,48 +1,40 @@
 package com.example.tutorial01.view;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
-import com.example.tutorial01.model.Movie;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.tutorial01.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieViewAdapter extends BaseAdapter {
-    private List<Movie> items = new ArrayList<>();
+public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewHolder> {
+    private List<MovieItem> movieItems = new ArrayList<>();
 
+    public void addItems(List<MovieItem> items) {
+        this.movieItems = items;
+        notifyDataSetChanged();
+    }
 
-    public void addItems(List<Movie> items) {
-        this.items = items;
+    @NonNull
+    @Override
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_list_item, parent, false);
+        return new MovieViewHolder(itemView);
     }
 
     @Override
-    public int getCount() {
-        return items.size();
+    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
+        final MovieItem movieItem = movieItems.get(position);
+        holder.bind(movieItem);
     }
 
     @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final Movie item = items.get(position);
-
-        final MovieItemView movieItemView = convertView == null ?
-                new MovieItemView(parent.getContext()) : (MovieItemView) convertView;
-
-        movieItemView.setImage(item.getPosterPath());
-        movieItemView.setTitle(item.getTitle());
-        movieItemView.setContent(item.getOverview());
-
-        return movieItemView;
+    public int getItemCount() {
+        return movieItems.size();
     }
 }

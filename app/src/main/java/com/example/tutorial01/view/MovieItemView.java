@@ -18,7 +18,7 @@ public class MovieItemView extends LinearLayout {
     public MovieItemView(Context context) {
         super(context);
         final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.list_item, this, true);
+        inflater.inflate(R.layout.movie_list_item, this, true);
 
         imageView = findViewById(R.id.item_image);
         titleView = findViewById(R.id.item_title);
