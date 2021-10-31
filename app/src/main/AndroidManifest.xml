@@ -22,5 +22,7 @@
         <activity android:name=".activity.DialogActivity" />
         <activity android:name=".activity.GenreActivity" />
         <activity android:name=".activity.MovieDetailActivity" />
+        <activity android:name=".activity.PostActivity" />
+        <activity android:name=".activity.FragActivity" />
     </application>
 </manifest>

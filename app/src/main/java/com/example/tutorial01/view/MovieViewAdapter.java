@@ -34,10 +34,16 @@ public class MovieViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == VIEW_TYPE_ITEM) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_list_item, parent, false);
+            View itemView = LayoutInflater
+                    .from(parent.getContext())
+                    .inflate(R.layout.movie_list_item, parent, false);
+
             return new MovieViewHolder(itemView);
         }
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.progress_bar_item, parent, false);
+        View itemView = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.progress_bar_item, parent, false);
+
         return new ProgressBarViewHolder(itemView);
     }
 

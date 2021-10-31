@@ -13,6 +13,8 @@ public class MenuActivity extends AppCompatActivity {
     private Button listButton;
     private Button dialogButton;
     private Button genreButton;
+    private Button postButton;
+    private Button fragButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,6 +24,8 @@ public class MenuActivity extends AppCompatActivity {
         listButton = findViewById(R.id.list_button);
         dialogButton = findViewById(R.id.dialog_button);
         genreButton = findViewById(R.id.genre_button);
+        postButton = findViewById(R.id.post_button);
+        fragButton = findViewById(R.id.frag_button);
 
         listButton.setOnClickListener((view) -> {
             final Intent intent = new Intent(this, MovieActivity.class);
@@ -35,6 +39,16 @@ public class MenuActivity extends AppCompatActivity {
 
         genreButton.setOnClickListener(view -> {
             final Intent intent = new Intent(this, GenreActivity.class);
+            startActivity(intent);
+        });
+
+        postButton.setOnClickListener(view -> {
+            final Intent intent = new Intent(this, PostActivity.class);
+            startActivity(intent);
+        });
+
+        fragButton.setOnClickListener(view -> {
+            final Intent intent = new Intent(this, FragActivity.class);
             startActivity(intent);
         });
     }
