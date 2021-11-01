@@ -4,7 +4,7 @@ import com.example.tutorial01.api.GenreApi;
 import com.example.tutorial01.api.config.RetrofitFactory;
 import com.example.tutorial01.model.GenreResponse;
 
-import retrofit2.Call;
+import io.reactivex.Flowable;
 import retrofit2.Retrofit;
 
 public class GenreService {
@@ -24,7 +24,7 @@ public class GenreService {
         return genreService;
     }
 
-    public Call<GenreResponse> getGenres() {
+    public Flowable<GenreResponse> getGenres() {
         return genreApi.getGenres();
     }
 }

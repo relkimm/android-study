@@ -6,7 +6,7 @@ import com.example.tutorial01.api.MovieApi;
 import com.example.tutorial01.model.MovieDetail;
 import com.example.tutorial01.model.MovieResponse;
 
-import retrofit2.Call;
+import io.reactivex.Flowable;
 import retrofit2.Retrofit;
 
 public class MovieService {
@@ -26,9 +26,9 @@ public class MovieService {
         return movieService;
     }
 
-    public Call<MovieResponse> getPopular(int page) {
+    public Flowable<MovieResponse> getPopular(int page) {
         return movieApi.getPopular(page);
     }
 
-    public Call<MovieDetail> getDetail(long movieId) { return movieApi.getDetail(movieId); }
+    public Flowable<MovieDetail> getDetail(long movieId) { return movieApi.getDetail(movieId); }
 }

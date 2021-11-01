@@ -16,16 +16,16 @@ import com.example.tutorial01.model.MovieResponse;
 import com.example.tutorial01.service.MovieService;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MovieActivity extends AppCompatActivity {
     private RecyclerView movieListView;
     private MovieViewAdapter movieViewAdapter;
     private LinearLayoutManager linearLayoutManager;
+    private MovieService movieService;
+
     private int page = 1;
     private boolean isLoading = false;
 
@@ -33,16 +33,22 @@ public class MovieActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
-        movieListView = findViewById(R.id.movie_list);
-
-        movieViewAdapter = new MovieViewAdapter();
-        linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL,  false);
-
-        movieListView.setAdapter(movieViewAdapter);
-        movieListView.setLayoutManager(linearLayoutManager);
-
+        setView();
+        setService();
         initScrollListener();
         fetchPopularMovie(page);
+    }
+
+    private void setView() {
+        movieListView = findViewById(R.id.movie_list);
+        movieViewAdapter = new MovieViewAdapter();
+        linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL,  false);
+        movieListView.setAdapter(movieViewAdapter);
+        movieListView.setLayoutManager(linearLayoutManager);
+    }
+
+    private void setService() {
+        movieService = MovieService.getInstance();
     }
 
     private void initScrollListener() {
@@ -64,30 +70,19 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void fetchPopularMovie(int page) {
-        MovieService.getInstance()
-                .getPopular(page)
-                .enqueue(new Callback<MovieResponse>() {
-                    @Override
-                    public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                        if(response.isSuccessful() == false) {
-                            Log.e("연결 성공X", "response code: " + response.code());
-                            return;
-                        }
+        movieService.getPopular(page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .map(MovieResponse::getResults)
+                .flatMap(Flowable::fromIterable)
+                .map(MovieItem::of)
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::showMovies);
+    }
 
-                        Log.d("연결 성공", "response code: " + response.code());
-                        final List<MovieItem> movieItems = response.body().getResults()
-                                .stream()
-                                .map(MovieItem::of)
-                                .collect(Collectors.toList());
-
-                        movieViewAdapter.addItems(movieItems);
-                        isLoading = false;
-                    }
-
-                    @Override
-                    public void onFailure(Call<MovieResponse> call, Throwable t) {
-                        Log.e("연결 실패", t.getMessage());
-                    }
-                });
+    private void showMovies(List<MovieItem> movieItems) {
+        movieViewAdapter.addItems(movieItems);
+        isLoading = false;
     }
 }

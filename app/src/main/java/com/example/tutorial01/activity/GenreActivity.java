@@ -1,7 +1,6 @@
 package com.example.tutorial01.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,56 +14,51 @@ import com.example.tutorial01.view.GenreItem;
 import com.example.tutorial01.view.GenreViewAdapter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class GenreActivity extends AppCompatActivity {
     private RecyclerView genreListView;
     private GenreViewAdapter genreViewAdapter;
     private LinearLayoutManager linearLayoutManager;
+    private GenreService genreService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genre);
-        genreListView = findViewById(R.id.genre_list);
-
-        genreViewAdapter = new GenreViewAdapter();
-        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-
-        genreListView.setAdapter(genreViewAdapter);
-        genreListView.setLayoutManager(linearLayoutManager);
-
+        setView();
+        setService();
         fetchGenres();
     }
 
+    private void setView() {
+        genreListView = findViewById(R.id.genre_list);
+        genreViewAdapter = new GenreViewAdapter();
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        genreListView.setAdapter(genreViewAdapter);
+        genreListView.setLayoutManager(linearLayoutManager);
+    }
+
+    private void setService() {
+        genreService = GenreService.getInstance();
+    }
+
     private void fetchGenres() {
-        GenreService.getInstance()
-                .getGenres()
-                .enqueue(new Callback<GenreResponse>() {
-                    @Override
-                    public void onResponse(Call<GenreResponse> call, Response<GenreResponse> response) {
-                        if(!response.isSuccessful()) {
-                            Log.e("연결 성공X", "response code : " + response.code());
-                            return;
-                        }
+        genreService.getGenres()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .map(GenreResponse::getGenres)
+                .flatMap(Flowable::fromIterable)
+                .map(GenreItem::of)
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::showGenres);
+    }
 
-                        Log.d("연결 성공", "response code : " + response.code());
-                        final List<GenreItem> genreItems = response.body().getGenres()
-                                .stream()
-                                .map(GenreItem::of)
-                                .collect(Collectors.toList());
-
-                        genreViewAdapter.setItems(genreItems);
-                    }
-
-                    @Override
-                    public void onFailure(Call<GenreResponse> call, Throwable t) {
-                        Log.e("연결 실패", t.getMessage());
-                    }
-                });
+    private void showGenres(List<GenreItem> genreItems) {
+        genreViewAdapter.setItems(genreItems);
     }
 }
