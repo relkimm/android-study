@@ -25,5 +25,6 @@
         <activity android:name=".activity.PostActivity" />
         <activity android:name=".activity.FragActivity" />
         <activity android:name=".activity.TabActivity" />
+        <activity android:name=".activity.MovieMainActivity" />
     </application>
 </manifest>
